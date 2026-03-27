@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bitcoin (BTC) | Kinetic Ledger</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-dim": "#24f07e",
+                        "on-tertiary": "#440900",
+                        "surface-container-high": "#1c2024",
+                        "tertiary-dim": "#dc3300",
+                        "outline-variant": "#45484c",
+                        "surface": "#0b0e11",
+                        "secondary-fixed-dim": "#24f07e",
+                        "on-tertiary-fixed": "#360600",
+                        "secondary-container": "#006d35",
+                        "primary": "#a1faff",
+                        "on-primary-fixed": "#004346",
+                        "surface-container-highest": "#22262b",
+                        "on-background": "#f8f9fe",
+                        "on-tertiary-container": "#000000",
+                        "surface-container": "#161a1e",
+                        "surface-container-lowest": "#000000",
+                        "on-primary": "#006165",
+                        "on-primary-fixed-variant": "#006266",
+                        "primary-fixed-dim": "#00e5ee",
+                        "primary-container": "#00f4fe",
+                        "surface-tint": "#a1faff",
+                        "surface-container-low": "#101417",
+                        "secondary": "#3fff8b",
+                        "surface-variant": "#22262b",
+                        "error": "#ff716c",
+                        "on-surface-variant": "#a9abaf",
+                        "tertiary-container": "#fc3c00",
+                        "inverse-on-surface": "#535559",
+                        "on-surface": "#f8f9fe",
+                        "on-primary-container": "#00575b",
+                        "surface-bright": "#282d31",
+                        "on-secondary-fixed": "#004820",
+                        "inverse-primary": "#006a6e",
+                        "error-container": "#9f0519",
+                        "on-tertiary-fixed-variant": "#721600",
+                        "on-error": "#490006",
+                        "on-secondary-container": "#e3ffe4",
+                        "background": "#0b0e11",
+                        "secondary-fixed": "#3fff8b",
+                        "primary-dim": "#00e5ee",
+                        "tertiary": "#ff7350",
+                        "error-dim": "#d7383b",
+                        "on-error-container": "#ffa8a3",
+                        "on-secondary": "#005d2c",
+                        "primary-fixed": "#00f4fe",
+                        "tertiary-fixed": "#ff9479",
+                        "surface-dim": "#0b0e11",
+                        "inverse-surface": "#f8f9fe",
+                        "outline": "#737679",
+                        "on-secondary-fixed-variant": "#006832",
+                        "tertiary-fixed-dim": "#ff7d5c"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0b0e11;
+            color: #f8f9fe;
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(22, 26, 30, 0.6);
+            backdrop-filter: blur(20px);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(161, 250, 255, 0.2);
+        }
+        .chart-mask {
+            mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface selection:bg-primary selection:text-on-primary-container">
+<!-- Top Navigation (Context: Transactional/Sub-page suppression of main nav clusters) -->
+<nav class="fixed top-0 w-full z-50 bg-[#0b0e11]/60 backdrop-blur-xl flex justify-between items-center px-8 h-16 max-w-[1920px] mx-auto shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+<div class="flex items-center gap-6">
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors duration-300">
+<span class="material-symbols-outlined text-lg">arrow_back</span>
+<span class="font-label text-sm font-medium">Markets</span>
+</button>
+<div class="h-4 w-[1px] bg-outline-variant/30"></div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="currency_bitcoin">currency_bitcoin</span>
+</div>
+<h1 class="font-headline font-bold text-xl tracking-tight text-on-surface">Bitcoin <span class="text-on-surface-variant font-normal text-sm ml-1">BTC</span></h1>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-high border border-outline-variant/20 rounded-xl hover:bg-surface-container-highest transition-all duration-300">
+<span class="material-symbols-outlined text-primary" data-icon="star">star</span>
+<span class="font-label text-sm font-medium">Add to Watchlist</span>
+</button>
+<button class="px-6 py-2 bg-primary text-on-primary-container font-bold rounded-xl hover:scale-[0.98] transition-all duration-150 shadow-[0_0_20px_rgba(161,250,255,0.3)]">
+                Trade Now
+            </button>
+</div>
+</nav>
+<main class="pt-24 pb-12 px-8 max-w-[1440px] mx-auto">
+<!-- Header & Price Hero -->
+<header class="flex flex-col md:flex-row justify-between items-end gap-8 mb-12">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-primary font-label text-[10px] tracking-widest uppercase">Rank #1</span>
+<span class="px-2 py-0.5 rounded bg-secondary/10 text-secondary font-label text-[10px] tracking-widest uppercase">Coin</span>
+</div>
+<div class="flex items-baseline gap-4">
+<h2 class="font-headline text-6xl font-bold tracking-tighter text-on-surface">$64,328.50</h2>
+<div class="flex items-center text-secondary font-medium">
+<span class="material-symbols-outlined text-lg">arrow_drop_up</span>
+<span class="font-body text-xl">2.45%</span>
+</div>
+</div>
+<p class="text-on-surface-variant font-label text-sm mt-2">Last updated: 14:02:45 UTC</p>
+</div>
+<div class="flex gap-1 p-1 bg-surface-container-low rounded-xl">
+<button class="px-4 py-2 rounded-lg font-label text-sm text-primary bg-primary/10 transition-all">1h</button>
+<button class="px-4 py-2 rounded-lg font-label text-sm text-on-surface-variant hover:text-on-surface transition-all">24h</button>
+<button class="px-4 py-2 rounded-lg font-label text-sm text-on-surface-variant hover:text-on-surface transition-all">7d</button>
+<button class="px-4 py-2 rounded-lg font-label text-sm text-on-surface-variant hover:text-on-surface transition-all">1m</button>
+<button class="px-4 py-2 rounded-lg font-label text-sm text-on-surface-variant hover:text-on-surface transition-all">1y</button>
+<button class="px-4 py-2 rounded-lg font-label text-sm text-on-surface-variant hover:text-on-surface transition-all">ALL</button>
+</div>
+</header>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-12 gap-8">
+<!-- Price Chart Section -->
+<section class="col-span-12 lg:col-span-8 bg-surface-container-low rounded-xl p-8 min-h-[500px] flex flex-col relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
+<div class="flex justify-between items-start mb-12 relative z-10">
+<div>
+<h3 class="font-headline text-lg font-semibold text-on-surface">Market Performance</h3>
+<p class="text-on-surface-variant text-sm">Real-time price feed via Kinetic API</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(161,250,255,0.8)]"></div>
+<span class="text-xs text-on-surface-variant font-label">Price BTC/USD</span>
+</div>
+</div>
+</div>
+<!-- Abstract Chart Visualization -->
+<div class="flex-grow flex items-end gap-1 relative">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="w-full h-[1px] bg-outline-variant/10"></div>
+<div class="w-full h-[1px] bg-outline-variant/10"></div>
+<div class="w-full h-[1px] bg-outline-variant/10"></div>
+<div class="w-full h-[1px] bg-outline-variant/10"></div>
+<div class="w-full h-[1px] bg-outline-variant/10"></div>
+</div>
+<!-- Decorative Sparkline Elements -->
+<div class="w-full h-full relative chart-mask mt-8">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 1000 300">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#a1faff" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#a1faff" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path class="drop-shadow-[0_0_8px_rgba(161,250,255,0.5)]" d="M0,250 Q100,200 200,220 T400,100 T600,150 T800,50 T1000,80" fill="none" stroke="#a1faff" stroke-width="3"></path>
+<path d="M0,250 Q100,200 200,220 T400,100 T600,150 T800,50 T1000,80 V300 H0 Z" fill="url(#chartGradient)"></path>
+<!-- Highlight Point -->
+<circle class="animate-pulse" cx="800" cy="50" fill="#a1faff" r="5"></circle>
+<line opacity="0.4" stroke="#a1faff" stroke-dasharray="4" stroke-width="1" x1="800" x2="800" y1="50" y2="300"></line>
+</svg>
+<!-- Tooltip Overlay -->
+<div class="absolute top-4 left-[80%] -translate-x-1/2 bg-surface-container-highest px-3 py-2 rounded-lg shadow-xl border border-outline-variant/20 z-20">
+<p class="text-[10px] text-on-surface-variant font-label uppercase tracking-widest">Oct 24, 08:30</p>
+<p class="text-sm font-bold text-primary">$64,812.20</p>
+</div>
+</div>
+</div>
+<div class="flex justify-between mt-6 text-[10px] font-label text-on-surface-variant uppercase tracking-widest">
+<span>08:00</span>
+<span>10:00</span>
+<span>12:00</span>
+<span>14:00</span>
+<span>16:00</span>
+<span>18:00</span>
+</div>
+</section>
+<!-- Stats Sidebar -->
+<aside class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<!-- Data Grid Cards (Bento Style) -->
+<div class="grid grid-cols-2 gap-4 h-full">
+<div class="col-span-2 bg-surface-container-high p-6 rounded-xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="hub">hub</span>
+<span class="text-secondary text-xs font-medium bg-secondary/10 px-2 py-0.5 rounded">+0.4%</span>
+</div>
+<div class="mt-8">
+<h4 class="text-on-surface-variant font-label text-xs uppercase tracking-widest mb-1">Market Cap</h4>
+<p class="font-headline text-2xl font-bold text-on-surface">$1.24T</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl">
+<span class="material-symbols-outlined text-on-surface-variant text-lg" data-icon="bar_chart">bar_chart</span>
+<div class="mt-4">
+<h4 class="text-on-surface-variant font-label text-[10px] uppercase tracking-widest mb-1">24h Vol</h4>
+<p class="font-headline text-lg font-bold text-on-surface">$34.2B</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl">
+<span class="material-symbols-outlined text-on-surface-variant text-lg" data-icon="account_balance_wallet">account_balance_wallet</span>
+<div class="mt-4">
+<h4 class="text-on-surface-variant font-label text-[10px] uppercase tracking-widest mb-1">Circulating</h4>
+<p class="font-headline text-lg font-bold text-on-surface">19.7M BTC</p>
+</div>
+</div>
+<div class="col-span-2 bg-gradient-to-br from-surface-container-highest to-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="show_chart">show_chart</span>
+</div>
+<div>
+<h4 class="text-on-surface-variant font-label text-xs uppercase tracking-widest">All-Time High</h4>
+<p class="font-headline text-xl font-bold text-on-surface">$73,750.07</p>
+</div>
+</div>
+<div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[87%] rounded-full shadow-[0_0_10px_#a1faff]"></div>
+</div>
+<div class="flex justify-between mt-2 text-[10px] font-label text-on-surface-variant">
+<span>87% of ATH</span>
+<span>-12.8% from peak</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+<!-- Additional Detail Section -->
+<section class="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="bg-surface-container-low rounded-xl p-8 border-l-4 border-primary/40">
+<h4 class="font-headline text-lg font-bold mb-4">What is Bitcoin?</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                    Bitcoin is a decentralized digital currency, without a central bank or single administrator, that can be sent from user to user on the peer-to-peer bitcoin network without the need for intermediaries.
+                </p>
+<button class="mt-6 text-primary font-medium text-sm flex items-center gap-2 hover:gap-3 transition-all">
+                    Read Whitepaper <span class="material-symbols-outlined text-sm">open_in_new</span>
+</button>
+</div>
+<div class="lg:col-span-2 bg-surface-container-low rounded-xl p-8 flex flex-col md:flex-row gap-8 items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="w-20 h-20 rounded-2xl overflow-hidden grayscale contrast-125">
+<img class="w-full h-full object-cover" data-alt="abstract geometric composition of golden digital currency coins and circuit board patterns in sharp cinematic focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZOmfFFo98cNO5ZpknbD7b7c8UpbhUmkOylldM4dhFt6cNsfZfSS4cZZJ9pdbPOF73ZkIMt7BD2-2fR4tRxuRRGYKBFlg5am6aFbPnB7kS74l2ERFLXZCvY8G3eKxuX8gtPlkB_-BDhOdJccAaDygpnPBhgKVukHBdwoyCD2tspJFaonZR2hp3i27ij9Uykc59zeXREi2o-vA14Utc9fQbjNH0djnmy7IxSZBqsCGhIMLrUd4Avlp0ld_cVEcUEA94-xDGXygDHjA"/>
+</div>
+<div>
+<h4 class="font-headline text-xl font-bold">Kinetic Prediction Engine</h4>
+<p class="text-on-surface-variant text-sm max-w-sm">Our AI models suggest a <span class="text-secondary">68% probability</span> of upward momentum in the next 4 hours based on volume delta.</p>
+</div>
+</div>
+<button class="w-full md:w-auto px-8 py-3 bg-surface-container-highest border border-outline-variant/30 font-bold rounded-xl hover:bg-surface-bright transition-all">
+                    View AI Analysis
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer Identity -->
+<footer class="mt-20 py-12 border-t border-outline-variant/10 px-8 text-center">
+<div class="flex justify-center items-center gap-2 mb-4">
+<span class="text-2xl font-bold bg-gradient-to-r from-[#a1faff] to-[#00f4fe] bg-clip-text text-transparent font-headline">Kinetic Ledger</span>
+</div>
+<p class="text-on-surface-variant text-xs font-label uppercase tracking-widest opacity-50">High-Velocity Digital Asset Intelligence • V1.0.4</p>
+</footer>
+</body></html>

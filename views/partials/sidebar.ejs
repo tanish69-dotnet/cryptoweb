@@ -1,0 +1,40 @@
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-[#1c2024]/15 bg-[#0b0e11] hidden xl:flex flex-col py-8 gap-4 z-40">
+<div class="px-6 mb-6 cursor-pointer" onclick="window.location.href='/'">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center shadow-[0_0_15px_rgba(161,250,255,0.4)]">
+<span class="material-symbols-outlined text-on-primary text-xl font-bold">bolt</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight text-on-surface leading-none font-['Space_Grotesk']">Kinetic</h1>
+<span class="text-[10px] text-on-surface-variant font-mono tracking-wider uppercase">V1.0.4</span>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 py-6 flex flex-col gap-2 relative">
+<!-- Search Form Assignment Component -->
+<div class="px-0 mb-4">
+    <form action="/price" method="GET" class="relative group">
+        <span onclick="if(this.nextElementSibling.value) this.closest('form').submit()" class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm group-focus-within:text-primary hover:text-primary cursor-pointer z-10 transition-colors">search</span>
+        <input name="coin" class="w-full bg-surface-container-highest border border-outline-variant/30 rounded-xl pl-10 pr-4 py-3 text-sm focus:ring-1 focus:ring-primary/50 transition-all text-on-surface placeholder:text-on-surface-variant/40 outline-none shadow-[0_4px_20px_rgba(0,0,0,0.1)] focus:shadow-[0_0_15px_rgba(161,250,255,0.15)]" placeholder="Enter coin (e.g. BTC)" type="text" required autocomplete="off"/>
+    </form>
+</div>
+<!-- Highlight Active State dynamically using EJS variable 'currentPath' -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl <%= currentPath === '/' || currentPath.startsWith('/coin') ? 'bg-surface-container-high text-primary border border-surface-container-highest shadow-[0_4px_20px_rgba(0,0,0,0.2)]' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container group' %> transition-all" href="/">
+<span class="material-symbols-outlined w-6 text-center">grid_view</span>
+<span class="font-label text-sm font-medium tracking-wide">Dashboard</span>
+</a>
+<!-- Markets -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl <%= currentPath === '/markets' ? 'bg-surface-container-high text-primary border border-surface-container-highest shadow-[0_4px_20px_rgba(0,0,0,0.2)]' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container group' %> transition-all" href="/#markets">
+<span class="material-symbols-outlined w-6 text-center <%= currentPath === '/markets' ? '' : 'group-hover:scale-110' %> transition-transform">trending_up</span>
+<span class="font-label text-sm font-medium tracking-wide">Markets</span>
+</a>
+<!-- Portfolio -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl <%= currentPath === '/portfolio' ? 'bg-surface-container-high text-primary border border-surface-container-highest shadow-[0_4px_20px_rgba(0,0,0,0.2)]' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container group' %> transition-all" href="/portfolio">
+<span class="material-symbols-outlined w-6 text-center <%= currentPath === '/portfolio' ? '' : 'group-hover:scale-110' %> transition-transform">account_balance_wallet</span>
+<span class="font-label text-sm font-medium tracking-wide">Portfolio</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full bg-primary/10 text-primary hover:bg-primary/20 hover:shadow-[0_0_20px_rgba(161,250,255,0.2)] transition-all font-bold tracking-wide rounded-xl py-3 border border-primary/20">Connect Wallet</button>
+</div>
+</aside>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CryptoPulse | Kinetic Ledger</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-dim": "#24f07e",
+                        "on-tertiary": "#440900",
+                        "surface-container-high": "#1c2024",
+                        "tertiary-dim": "#dc3300",
+                        "outline-variant": "#45484c",
+                        "surface": "#0b0e11",
+                        "secondary-fixed-dim": "#24f07e",
+                        "on-tertiary-fixed": "#360600",
+                        "secondary-container": "#006d35",
+                        "primary": "#a1faff",
+                        "on-primary-fixed": "#004346",
+                        "surface-container-highest": "#22262b",
+                        "on-background": "#f8f9fe",
+                        "on-tertiary-container": "#000000",
+                        "surface-container": "#161a1e",
+                        "surface-container-lowest": "#000000",
+                        "on-primary": "#006165",
+                        "on-primary-fixed-variant": "#006266",
+                        "primary-fixed-dim": "#00e5ee",
+                        "primary-container": "#00f4fe",
+                        "surface-tint": "#a1faff",
+                        "surface-container-low": "#101417",
+                        "secondary": "#3fff8b",
+                        "surface-variant": "#22262b",
+                        "error": "#ff716c",
+                        "on-surface-variant": "#a9abaf",
+                        "tertiary-container": "#fc3c00",
+                        "inverse-on-surface": "#535559",
+                        "on-surface": "#f8f9fe",
+                        "on-primary-container": "#00575b",
+                        "surface-bright": "#282d31",
+                        "on-secondary-fixed": "#004820",
+                        "inverse-primary": "#006a6e",
+                        "error-container": "#9f0519",
+                        "on-tertiary-fixed-variant": "#721600",
+                        "on-error": "#490006",
+                        "on-secondary-container": "#e3ffe4",
+                        "background": "#0b0e11",
+                        "secondary-fixed": "#3fff8b",
+                        "primary-dim": "#00e5ee",
+                        "tertiary": "#ff7350",
+                        "error-dim": "#d7383b",
+                        "on-error-container": "#ffa8a3",
+                        "on-secondary": "#005d2c",
+                        "primary-fixed": "#00f4fe",
+                        "tertiary-fixed": "#ff9479",
+                        "surface-dim": "#0b0e11",
+                        "inverse-surface": "#f8f9fe",
+                        "outline": "#737679",
+                        "on-secondary-fixed-variant": "#006832",
+                        "tertiary-fixed-dim": "#ff7d5c"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0b0e11;
+            color: #f8f9fe;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(22, 26, 30, 0.6);
+            backdrop-filter: blur(20px);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(161, 250, 255, 0.2);
+        }
+        .chart-mask {
+            mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+        }
+        /* Overrides to make sure hidden classes work correctly */
+        .hidden { display: none !important; }
+        .positive-trend { color: #3fff8b !important; text-shadow: 0 0 10px rgba(63, 255, 139, 0.3); }
+        .negative-trend { color: #ff716c !important; text-shadow: 0 0 10px rgba(255, 113, 108, 0.3); }
+    </style>
+</head>
+<body class="bg-surface selection:bg-primary selection:text-on-primary-container">
+
+<nav class="fixed top-0 w-full z-50 bg-[#0b0e11]/60 backdrop-blur-xl flex justify-between items-center px-8 h-16 max-w-[1920px] mx-auto shadow-[0_20px_40px_rgba(0,0,0,0.4)] border-b border-outline-variant/10">
+<div class="flex items-center gap-6">
+    <a href="/" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors duration-300">
+        <span class="material-symbols-outlined text-lg">arrow_back</span>
+        <span class="font-label text-sm font-medium">Dashboard</span>
+    </a>
+    <div class="h-4 w-[1px] bg-outline-variant/30"></div>
+    <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+        </div>
+        <h1 class="font-headline font-bold text-xl tracking-tight text-on-surface" id="symbol-name">BTC-USD</h1>
+    </div>
+</div>
+<div class="flex items-center gap-4">
+    <!-- Replacing Watchlist Btn with Select Dropdown -->
+    <select id="crypto-select" class="px-4 py-2 bg-surface-container-high border border-outline-variant/20 rounded-xl hover:bg-surface-container-highest transition-all duration-300 font-label text-sm text-on-surface outline-none cursor-pointer">
+        <option value="BTC-USD">BTC-USD</option>
+        <option value="ETH-USD">ETH-USD</option>
+        <option value="SOL-USD">SOL-USD</option>
+        <option value="XRP-USD">XRP-USD</option>
+        <option value="ADA-USD">ADA-USD</option>
+        <option value="DOGE-USD">DOGE-USD</option>
+        <option value="DOT-USD">DOT-USD</option>
+        <option value="LINK-USD">LINK-USD</option>
+    </select>
+    
+    <button id="fetch-btn" class="px-6 py-2 bg-primary text-on-primary-container font-bold rounded-xl hover:scale-[0.98] transition-all duration-150 shadow-[0_0_20px_rgba(161,250,255,0.3)]">
+        Initialize Feed
+    </button>
+</div>
+</nav>
+
+<main class="pt-24 pb-12 px-8 max-w-[1440px] mx-auto hidden" id="results-card">
+<!-- Header & Price Hero -->
+<header class="flex flex-col md:flex-row justify-between items-end gap-8 mb-12">
+    <div>
+        <div class="flex items-center gap-3 mb-2">
+            <span class="px-2 py-0.5 rounded bg-surface-container-highest text-primary font-label text-[10px] tracking-widest uppercase">Live Terminal Feed</span>
+        </div>
+        <div class="flex items-baseline gap-4">
+            <h2 id="current-price" class="font-headline text-6xl font-bold tracking-tighter text-on-surface">$0.00</h2>
+            <div class="flex items-center font-medium">
+                <span id="price-trend" class="font-body text-xl">0.00%</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content Grid -->
+<div class="grid grid-cols-12 gap-8">
+    <section class="col-span-12 lg:col-span-8 bg-surface-container-low rounded-xl p-8 min-h-[500px] flex flex-col relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
+        <div class="flex justify-between items-start mb-12 relative z-10">
+            <div>
+                <h3 class="font-headline text-lg font-semibold text-on-surface">Market Performance</h3>
+                <p class="text-on-surface-variant text-sm">Real-time price feed via Kinetic API</p>
+            </div>
+            <div class="flex gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(161,250,255,0.8)] animate-pulse"></div>
+                    <span class="text-xs text-on-surface-variant font-label">Sync Active</span>
+                </div>
+            </div>
+        </div>
+        <!-- Abstract Chart Visualization -->
+        <div class="flex-grow flex items-end gap-1 relative">
+            <div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                <div class="w-full h-[1px] bg-outline-variant/10"></div>
+                <div class="w-full h-[1px] bg-outline-variant/10"></div>
+                <div class="w-full h-[1px] bg-outline-variant/10"></div>
+                <div class="w-full h-[1px] bg-outline-variant/10"></div>
+                <div class="w-full h-[1px] bg-outline-variant/10"></div>
+            </div>
+            <div class="w-full h-full relative chart-mask mt-8">
+                <svg class="w-full h-full overflow-visible" viewbox="0 0 1000 300">
+                    <defs>
+                        <lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                            <stop offset="0%" stop-color="#a1faff" stop-opacity="0.3"></stop>
+                            <stop offset="100%" stop-color="#a1faff" stop-opacity="0"></stop>
+                        </lineargradient>
+                    </defs>
+                    <path id="chart-line" class="drop-shadow-[0_0_8px_rgba(161,250,255,0.5)]" d="M0,250 Q100,200 200,220 T400,100 T600,150 T800,50 T1000,80" fill="none" stroke="#a1faff" stroke-width="3"></path>
+                    <path id="chart-fill" d="M0,250 Q100,200 200,220 T400,100 T600,150 T800,50 T1000,80 V300 H0 Z" fill="url(#chartGradient)"></path>
+                    <circle id="chart-highlight" class="animate-pulse" cx="1000" cy="80" fill="#a1faff" r="5"></circle>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Sidebar -->
+    <aside class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+        <div class="grid grid-cols-2 gap-4 h-full">
+            <div class="col-span-2 bg-surface-container-high p-6 rounded-xl flex flex-col justify-between">
+                <div class="mt-2">
+                    <h4 class="text-on-surface-variant font-label text-xs uppercase tracking-widest mb-1">Previous Close (24h Price)</h4>
+                    <p id="price-24h" class="font-headline text-2xl font-bold text-on-surface">$0.00</p>
+                </div>
+            </div>
+            <div class="col-span-2 bg-surface-container-low p-6 rounded-xl">
+                <span class="material-symbols-outlined text-on-surface-variant text-lg" data-icon="bar_chart">bar_chart</span>
+                <div class="mt-4">
+                    <h4 class="text-on-surface-variant font-label text-[10px] uppercase tracking-widest mb-1">24h Vol</h4>
+                    <p id="volume-24h" class="font-headline text-lg font-bold text-on-surface">0</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+</main>
+
+<div id="loader" class="pt-24 pb-12 px-8 max-w-[1440px] mx-auto text-center hidden">
+    <div class="w-12 h-12 rounded-full border-4 border-outline-variant/30 border-t-primary animate-spin mx-auto mb-4"></div>
+    <p class="text-on-surface-variant font-label tracking-wide uppercase">Syncing nodes...</p>
+</div>
+
+<div id="error-message" class="pt-24 pb-12 px-8 max-w-[1440px] mx-auto text-center hidden">
+    <div class="bg-error-container p-6 rounded-xl inline-block border border-error/50">
+        <span class="material-symbols-outlined text-error mb-2 text-3xl">error</span>
+        <p id="error-text" class="text-error font-medium">Failed to sync data feed.</p>
+    </div>
+</div>
+
+<script>
+    window.INITIAL_COIN_SYMBOL = "<%= typeof symbol !== 'undefined' ? symbol : 'BTC-USD' %>";
+</script>
+<script src="/script.js"></script>
+</body>
+</html>
