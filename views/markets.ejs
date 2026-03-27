@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Markets | Kinetic Ledger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#a1faff',
+                        secondary: '#3fff8b',
+                        error: '#ff716c',
+                        surface: '#0b0e11',
+                        'surface-container': '#12161b',
+                        'surface-container-low': '#161b22',
+                        'surface-container-high': '#22262b',
+                        'surface-container-highest': '#2d333b',
+                        'on-surface': '#f0f6fc',
+                        'on-surface-variant': '#8b949e',
+                        'outline': '#30363d',
+                        'outline-variant': '#484f58'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        headline: ['Space Grotesk', 'sans-serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-surface text-on-surface font-sans antialiased selection:bg-primary/30 selection:text-primary">
+<div class="ambient-grid"></div>
+
+<div class="flex h-screen overflow-hidden">
+    <%- include('partials/sidebar') %>
+    
+    <!-- Mobile Header -->
+    <div class="xl:hidden fixed top-0 w-full bg-surface/80 backdrop-blur-md border-b border-outline-variant/20 py-4 px-6 flex justify-between items-center z-30">
+        <h1 class="text-xl font-bold font-headline">Kinetic</h1>
+        <span class="material-symbols-outlined text-primary cursor-pointer hover:bg-surface-container-high p-2 rounded-lg transition-colors">menu</span>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-1 xl:ml-64 relative z-10 p-8 pt-24 xl:pt-12 pb-32 h-full overflow-y-auto w-full custom-scrollbar scroll-smooth">
+        
+        <header class="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-6 mb-12">
+            <div>
+                <h1 class="text-4xl font-headline font-bold mb-2">Global Markets</h1>
+                <p class="text-on-surface-variant text-sm max-w-lg">Comprehensive real-time tracking of leading digital assets across high-liquidity orderbooks. Powered by Kinetic dynamic proxy architectures.</p>
+            </div>
+            
+            <div class="flex items-center gap-4 bg-surface-container-low/50 backdrop-blur-md px-6 py-4 rounded-2xl border border-outline-variant/20 shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+                <div class="flex flex-col">
+                    <span class="text-on-surface-variant text-[10px] font-bold tracking-[0.2em] uppercase mb-1">Total Market Cap</span>
+                    <span class="text-primary font-headline text-xl font-bold tracking-tight">Active Matrix</span>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-headline font-bold tracking-wide">Verified Asset Integrations</h2>
+                
+                <div class="flex items-center gap-2" id="asset-filters">
+                    <button data-filter="all" class="filter-btn px-5 py-2 bg-surface-container-high rounded-full text-xs font-bold text-on-surface transition-all shadow-[0_4px_10px_rgba(0,0,0,0.1)]">All Assets</button>
+                    <button data-filter="gainer" class="filter-btn px-5 py-2 bg-transparent rounded-full text-xs font-bold text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all">Top Gainers</button>
+                    <button data-filter="loser" class="filter-btn px-5 py-2 bg-transparent rounded-full text-xs font-bold text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all">Top Losers</button>
+                </div>
+            </div>
+
+            <div class="glass-card transform transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_25px_50px_rgba(0,244,254,0.15)] rounded-3xl overflow-hidden border border-outline-variant/10">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[800px]">
+                        <thead>
+                            <tr class="border-b border-outline-variant/20 text-[10px] font-bold tracking-[0.15em] text-on-surface-variant uppercase bg-surface-container-low/60">
+                                <th class="pl-8 px-4 py-5 font-medium">Asset Name</th>
+                                <th class="px-4 py-5 font-medium">Live Terminal Price</th>
+                                <th class="px-4 py-5 font-medium">24H Volatility</th>
+                                <th class="px-4 py-5 font-medium">Verified Market Cap</th>
+                                <th class="px-4 py-5 font-medium">V2 Algorithmic Graph</th>
+                                <th class="pr-8 px-4 py-5 font-medium text-right">Execute</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% 
+                            const marketAssets = [
+                                { symbol: 'BTC-USD', name: 'Bitcoin', icon: 'currency_bitcoin', base: 'BTC', mcap: '$1.40T', price: '$64,281.40' },
+                                { symbol: 'ETH-USD', name: 'Ethereum', icon: 'token', base: 'ETH', mcap: '$410.2B', price: '$3,421.15' },
+                                { symbol: 'SOL-USD', name: 'Solana', icon: 'flash_on', base: 'SOL', mcap: '$82.9B', price: '$142.88' },
+                                { symbol: 'XRP-USD', name: 'Ripple', icon: 'waves', base: 'XRP', mcap: '$33.3B', price: '$0.6210' },
+                                { symbol: 'ADA-USD', name: 'Cardano', icon: 'star', base: 'ADA', mcap: '$16.1B', price: '$0.4500' },
+                                { symbol: 'DOGE-USD', name: 'Dogecoin', icon: 'pets', base: 'DOGE', mcap: '$24.5B', price: '$0.1852' },
+                                { symbol: 'DOT-USD', name: 'Polkadot', icon: 'hub', base: 'DOT', mcap: '$10.2B', price: '$7.2200' },
+                                { symbol: 'LINK-USD', name: 'Chainlink', icon: 'link', base: 'LINK', mcap: '$10.9B', price: '$18.55' },
+                                { symbol: 'MATIC-USD', name: 'Polygon', icon: 'layers', base: 'MATIC', mcap: '$6.9B', price: '$0.7240' },
+                                { symbol: 'LTC-USD', name: 'Litecoin', icon: 'monetization_on', base: 'LTC', mcap: '$7.1B', price: '$88.45' }
+                            ];
+                            %>
+                            <% marketAssets.forEach(asset => { %>
+                                <tr class="border-b border-outline-variant/10 hover:bg-surface-container/40 transition-colors table-asset-row group" data-symbol="<%= asset.symbol %>">
+                                    <td class="pl-8 px-4 py-6">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(161,250,255,0.2)] transition-all">
+                                                <span class="material-symbols-outlined text-xl"><%= asset.icon %></span>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-sm tracking-wide text-on-surface group-hover:text-primary transition-colors"><%= asset.name %></div>
+                                                <div class="text-[11px] text-on-surface-variant font-medium mt-0.5 tracking-wider"><%= asset.base %></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6">
+                                        <div class="font-mono text-[15px] font-bold tracking-tight text-on-surface price-cell row-price">
+                                            <%= asset.price %>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-6 row-change">
+                                        <span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+                                    </td>
+                                    <td class="px-4 py-6">
+                                        <span class="text-[13px] font-medium text-on-surface-variant tracking-wide"><%= asset.mcap %></span>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6 w-32">
+                                        <!-- SVG Generation Container -->
+                                        <svg class="row-svg h-8 w-full opacity-60 group-hover:opacity-100 transition-opacity" viewbox="0 0 100 30">
+                                            <path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path>
+                                        </svg>
+                                    </td>
+
+                                    <td class="pr-8 px-4 py-6 text-right">
+                                        <button onclick="window.location.href='/coin/<%= asset.symbol %>'" class="w-10 h-10 rounded-xl bg-primary/10 text-primary border border-primary/20 hover:bg-primary text-on-surface focus:outline-none hover:shadow-[0_0_20px_rgba(161,250,255,0.4)] transition-all inline-flex items-center justify-center group/btn cursor-pointer relative z-20">
+                                            <span class="material-symbols-outlined text-lg group-hover/btn:text-[#0b0e11] group-hover/btn:translate-x-0.5 transition-transform">swap_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- Dashboard Logic implicitly hooks and activates the table rows & tracking dynamically -->
+<script src="/dashboard.js"></script>
+
+</body>
+</html>

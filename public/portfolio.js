@@ -18,11 +18,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Fetch live actual prices from our Express API proxy
             const res = await fetch(`/api/price/${asset.symbol}`);
             const data = await res.json();
-            const currentPrice = parseFloat(data.last_trade_price);
+            const currentPrice = data.last_trade_price ? parseFloat(data.last_trade_price) : NaN;
             
             // Calculate accurate local holding vault value dynamically!
-            const holdingValue = currentPrice * asset.amount;
-            totalPortfolioValue += holdingValue;
+            const holdingValue = !isNaN(currentPrice) ? (currentPrice * asset.amount) : 0;
+            if (!isNaN(currentPrice)) {
+                totalPortfolioValue += holdingValue;
+            }
 
             const tr = document.createElement('tr');
             tr.className = 'hover:bg-surface-container transition-colors group cursor-pointer';
@@ -43,8 +45,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td class="px-8 py-5">
                     <div class="font-bold text-sm text-on-surface">${asset.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })} ${asset.symbol.split('-')[0]}</div>
                 </td>
-                <td class="px-8 py-5 font-mono text-sm text-on-surface-variant">${formatCurrency(currentPrice)}</td>
-                <td class="px-8 py-5 text-right font-mono font-bold text-sm text-primary group-hover:text-secondary transition-colors">${formatCurrency(holdingValue)}</td>
+                <td class="px-8 py-5 font-mono text-sm text-on-surface-variant">${!isNaN(currentPrice) ? formatCurrency(currentPrice) : '---'}</td>
+                <td class="px-8 py-5 text-right font-mono font-bold text-sm text-primary group-hover:text-secondary transition-colors">${!isNaN(currentPrice) ? formatCurrency(holdingValue) : '---'}</td>
             `;
             tbody.appendChild(tr);
 

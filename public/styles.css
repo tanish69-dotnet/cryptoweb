@@ -1,0 +1,46 @@
+/* public/styles.css - Kinetic Ledger V2 Aesthetic Protocol */
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+.glass-card { background: rgba(34, 38, 43, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: relative; overflow: hidden; }
+
+/* Holographic Tracking Glow */
+.glass-card::before {
+    content: ''; position: absolute; top: var(--y, 50%); left: var(--x, 50%);
+    transform: translate(-50%, -50%); width: 450px; height: 450px;
+    background: radial-gradient(circle, rgba(161, 250, 255, 0.12) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.5s ease; pointer-events: none; z-index: 0;
+}
+.glass-card:hover::before { opacity: 1; }
+.glass-card > div.relative { z-index: 10; } /* Priority index over glow */
+
+/* Sparkline Base Shadow Nodes */
+.sparkline-glow-pos { filter: drop-shadow(0 0 6px rgba(63, 255, 139, 0.4)); }
+.sparkline-glow-neg { filter: drop-shadow(0 0 6px rgba(255, 113, 108, 0.4)); }
+
+/* Dynamic SVG Path Render Algorithm */
+@keyframes drawPath { from { stroke-dasharray: 2000; stroke-dashoffset: 2000; } to { stroke-dasharray: 2000; stroke-dashoffset: 0; } }
+.sparkline-glow-pos path, .sparkline-glow-neg path, .row-svg path {
+    animation: drawPath 2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Data Tick Animations */
+@keyframes flashGreen {
+    0% { color: #3fff8b; text-shadow: 0 0 20px rgba(63,255,139,0.8); transform: translateY(-2px); }
+    100% { color: inherit; text-shadow: none; transform: translateY(0); }
+}
+@keyframes flashRed {
+    0% { color: #ff716c; text-shadow: 0 0 20px rgba(255,113,108,0.8); transform: translateY(2px); }
+    100% { color: inherit; text-shadow: none; transform: translateY(0); }
+}
+.tick-up { animation: flashGreen 0.8s ease-out forwards; display: inline-block; }
+.tick-down { animation: flashRed 0.8s ease-out forwards; display: inline-block; }
+
+/* Cybernetic Ambient Grid Algorithm */
+@keyframes gridScan { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
+.ambient-grid {
+    position: fixed; top: -50px; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: -1;
+    background-image: linear-gradient(to right, rgba(161, 250, 255, 0.03) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(161, 250, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px; animation: gridScan 4s linear infinite;
+    mask-image: radial-gradient(circle at center 30%, black 10%, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle at center 30%, black 10%, transparent 80%);
+}

@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }).format(num);
     };
 
+    let lastKnownPrice = null;
     const fetchCryptoData = async () => {
         const symbol = cryptoSelect.value;
         if (!symbol) return;
@@ -60,6 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Populate specific fields
             symbolNameEl.textContent = data.symbol;
             currentPriceEl.textContent = formatCurrency(data.last_trade_price);
+            if (lastKnownPrice !== null && lastKnownPrice !== parseFloat(data.last_trade_price)) {
+                currentPriceEl.classList.remove('tick-up', 'tick-down');
+                void currentPriceEl.offsetWidth; // trigger reflow
+                currentPriceEl.classList.add(parseFloat(data.last_trade_price) > lastKnownPrice ? 'tick-up' : 'tick-down');
+            }
+            lastKnownPrice = parseFloat(data.last_trade_price);
             
             const currentPrice = parseFloat(data.last_trade_price);
             const price24h = parseFloat(data.price_24h);

@@ -1,30 +1,57 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+const bindHolographicCards = () => {
+    document.querySelectorAll('.glass-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty('--x', `${e.clientX - rect.left}px`);
+            card.style.setProperty('--y', `${e.clientY - rect.top}px`);
+        });
+    });
+};
+bindHolographicCards();
+
     const formatCurrency = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
     
     // Top 3 featured assets mapped to HTML DOM glass cards
     const symbols = ['BTC-USD', 'ETH-USD', 'SOL-USD'];
     const cards = document.querySelectorAll('.glass-card');
     
+    const activePrices = {};
+
     const fetchDashboardData = () => {
         symbols.forEach((symbol, index) => {
-            fetch(`/api/price/${symbol}`)
+            setTimeout(() => {
+                fetch(`/api/price/${symbol}`)
                 .then(res => res.json())
                 .then(data => {
                     const card = cards[index];
                     if (!card) return;
                     
-                    const currentPrice = parseFloat(data.last_trade_price);
-                    const price24h = parseFloat(data.price_24h);
-                    const change = ((currentPrice - price24h) / price24h) * 100;
+                    const currentPrice = data.last_trade_price ? parseFloat(data.last_trade_price) : NaN;
+                    const price24h = data.price_24h ? parseFloat(data.price_24h) : NaN;
                     
                     // Update text elements
                     const priceEl = card.querySelector('.text-3xl.font-headline');
                     const changeEl = card.querySelector('.text-sm.font-bold');
                     
-                    if (priceEl) priceEl.textContent = formatCurrency(currentPrice);
-                    if (changeEl) {
+                    if (priceEl && !isNaN(currentPrice)) {
+                        priceEl.textContent = formatCurrency(currentPrice);
+                        if (activePrices[symbol] && activePrices[symbol] !== currentPrice) {
+                            priceEl.classList.remove('tick-up', 'tick-down');
+                            void priceEl.offsetWidth;
+                            priceEl.classList.add(currentPrice > activePrices[symbol] ? 'tick-up' : 'tick-down');
+                        }
+                        activePrices[symbol] = currentPrice;
+                    }
+
+                    if (changeEl && !isNaN(currentPrice) && !isNaN(price24h) && price24h !== 0) {
+                        const change = ((currentPrice - price24h) / price24h) * 100;
                         changeEl.textContent = `${change > 0 ? '+' : ''}${change.toFixed(2)}%`;
                         changeEl.className = `text-sm font-bold ${change > 0 ? 'text-secondary' : 'text-error'}`;
+                    } else if (changeEl) {
+                        changeEl.textContent = "0.00%";
+                        changeEl.className = "text-sm font-bold text-on-surface-variant";
                     }
                     
                     // Construct exact Binance sparklines on 100x30 SVG Canvas
@@ -57,19 +84,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 })
                 .catch(err => console.error(`Failed to fetch and map ${symbol}`, err));
+            }, index * 250); // Stagger requests by 250ms to bypass rate limits
         });
     };
 
     const fetchTableData = () => {
         const rows = document.querySelectorAll('.table-asset-row');
-        rows.forEach(row => {
+        rows.forEach((row, index) => {
             const sym = row.getAttribute('data-symbol');
-            fetch(`/api/price/${sym}`)
+            setTimeout(() => {
+                fetch(`/api/price/${sym}`)
                 .then(res => res.json())
                 .then(data => {
-                    const currentPrice = parseFloat(data.last_trade_price);
-                    const price24h = parseFloat(data.price_24h);
-                    const change = ((currentPrice - price24h) / price24h) * 100;
+                    const currentPrice = data.last_trade_price ? parseFloat(data.last_trade_price) : NaN;
+                    const price24h = data.price_24h ? parseFloat(data.price_24h) : NaN;
 
                     const priceEl = row.querySelector('.row-price');
                     const changeSpan = row.querySelector('.row-change span');
@@ -78,10 +106,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         priceEl.textContent = currentPrice < 10 
                             ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 4, maximumFractionDigits: 4 }).format(currentPrice)
                             : formatCurrency(currentPrice);
+                        if (activePrices[sym] && activePrices[sym] !== currentPrice) {
+                            priceEl.classList.remove('tick-up', 'tick-down');
+                            void priceEl.offsetWidth;
+                            priceEl.classList.add(currentPrice > activePrices[sym] ? 'tick-up' : 'tick-down');
+                        }
+                        activePrices[sym] = currentPrice;
                     }
-                    if (changeSpan && !isNaN(change)) {
+
+                    if (changeSpan && !isNaN(currentPrice) && !isNaN(price24h) && price24h !== 0) {
+                        const change = ((currentPrice - price24h) / price24h) * 100;
                         changeSpan.textContent = `${change > 0 ? '+' : ''}${change.toFixed(2)}%`;
                         changeSpan.className = `text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg ${change >= 0 ? 'bg-secondary/10 text-secondary' : 'bg-error/10 text-error'}`;
+                    } else if (changeSpan) {
+                        changeSpan.textContent = "---";
                     }
 
                     if (data.history24h && data.history24h.length > 0) {
@@ -112,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .then(() => { if (typeof applyFilter === 'function') applyFilter(); })
                 .catch(err => console.error(`Failed to fetch table data for ${sym}`, err));
+            }, index * 250); // Stagger requests by 250ms to bypass rate limits
         });
     };
 
@@ -154,9 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchDashboardData();
     fetchTableData();
     
-    // Auto-refresh using setInterval (every 3 seconds) to make prices appear live
+    // Auto-refresh using setInterval (every 10 seconds) to balance liveness and rate limits
     setInterval(() => {
         fetchDashboardData();
         fetchTableData();
-    }, 3000);
+    }, 10000);
 });

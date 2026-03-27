@@ -76,25 +76,10 @@
         },
       }
     </script>
-<style>
-      .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        vertical-align: middle;
-      }
-      .glass-card {
-        background: rgba(34, 38, 43, 0.4);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-      }
-      .sparkline-glow-pos {
-        filter: drop-shadow(0 0 4px rgba(63, 255, 139, 0.3));
-      }
-      .sparkline-glow-neg {
-        filter: drop-shadow(0 0 4px rgba(255, 113, 108, 0.3));
-      }
-    </style>
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body class="bg-surface text-on-surface font-body selection:bg-primary/30">
+<div class="ambient-grid"></div>
 <%- include('partials/sidebar', { currentPath: currentPath }) %>
 <!-- Main Content Canvas -->
 <main class="xl:pl-64 pt-8 min-h-screen">
@@ -120,7 +105,7 @@
 <!-- Featured Assets (Top 3) - Bento Style -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 <!-- Bitcoin -->
-<div onclick="window.location.href='/coin/BTC-USD'" class="glass-card rounded-2xl p-6 relative overflow-hidden group border border-transparent hover:border-primary/40 cursor-pointer transition-all hover:shadow-[0_0_20px_rgba(161,250,255,0.1)]">
+<div onclick="window.location.href='/coin/BTC-USD'" class="glass-card rounded-2xl p-6 relative overflow-hidden group border border-transparent hover:border-primary/40 cursor-pointer transition-all hover:-translate-y-2 hover:shadow-[0_25px_40px_rgba(0,244,254,0.15)]">
 <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
 <span class="material-symbols-outlined text-7xl">currency_bitcoin</span>
 </div>
@@ -146,7 +131,7 @@
 </div>
 </div>
 <!-- Ethereum -->
-<div onclick="window.location.href='/coin/ETH-USD'" class="glass-card rounded-2xl p-6 relative overflow-hidden group border border-transparent hover:border-primary/40 cursor-pointer transition-all hover:shadow-[0_0_20px_rgba(161,250,255,0.1)]">
+<div onclick="window.location.href='/coin/ETH-USD'" class="glass-card rounded-2xl p-6 relative overflow-hidden group border border-transparent hover:border-primary/40 cursor-pointer transition-all hover:-translate-y-2 hover:shadow-[0_25px_40px_rgba(0,244,254,0.15)]">
 <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
 <span class="material-symbols-outlined text-7xl">token</span>
 </div>
@@ -172,7 +157,7 @@
 </div>
 </div>
 <!-- Solana -->
-<div onclick="window.location.href='/coin/SOL-USD'" class="glass-card rounded-2xl p-6 relative overflow-hidden group border border-primary/20 hover:border-primary/60 cursor-pointer transition-all hover:shadow-[0_0_20px_rgba(161,250,255,0.1)]">
+<div onclick="window.location.href='/coin/SOL-USD'" class="glass-card rounded-2xl p-6 relative overflow-hidden group border border-primary/20 hover:border-primary/60 cursor-pointer transition-all hover:-translate-y-2 hover:shadow-[0_25px_40px_rgba(0,244,254,0.15)]">
 <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
 <span class="material-symbols-outlined text-7xl">stat_3</span>
 </div>
@@ -225,11 +210,11 @@
 <tbody class="divide-y divide-outline-variant/5">
 <%
 const tableAssets = [
-  { symbol: 'ADA-USD', name: 'Cardano', icon: 'star', base: 'ADA', mcap: '$16.1B' },
-  { symbol: 'DOT-USD', name: 'Polkadot', icon: 'hub', base: 'DOT', mcap: '$10.2B' },
-  { symbol: 'XRP-USD', name: 'Ripple', icon: 'waves', base: 'XRP', mcap: '$33.3B' },
-  { symbol: 'LINK-USD', name: 'Chainlink', icon: 'link', base: 'LINK', mcap: '$10.9B' },
-  { symbol: 'MATIC-USD', name: 'Polygon', icon: 'layers', base: 'MATIC', mcap: '$6.9B' }
+  { symbol: 'ADA-USD', name: 'Cardano', icon: 'star', base: 'ADA', mcap: '$16.1B', price: '$0.4500' },
+  { symbol: 'DOT-USD', name: 'Polkadot', icon: 'hub', base: 'DOT', mcap: '$10.2B', price: '$7.2200' },
+  { symbol: 'XRP-USD', name: 'Ripple', icon: 'waves', base: 'XRP', mcap: '$33.3B', price: '$0.6210' },
+  { symbol: 'LINK-USD', name: 'Chainlink', icon: 'link', base: 'LINK', mcap: '$10.99B', price: '$18.55' },
+  { symbol: 'MATIC-USD', name: 'Polygon', icon: 'layers', base: 'MATIC', mcap: '$6.9B', price: '$0.7240' }
 ];
 %>
 <% tableAssets.forEach(asset => { %>
@@ -245,9 +230,9 @@ const tableAssets = [
 </div>
 </div>
 </td>
-<td class="px-4 py-5 font-mono text-sm font-medium row-price text-on-surface">...</td>
+<td class="px-4 py-5 font-mono text-sm font-medium row-price text-on-surface"><%= asset.price %></td>
 <td class="px-4 py-5 row-change">
-<span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">...</span>
+<span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
 </td>
 <td class="px-4 py-5 text-sm text-on-surface-variant"><%= asset.mcap %></td>
 <td class="px-4 py-5">
