@@ -13,6 +13,64 @@ bindHolographicCards();
 
     const formatCurrency = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
     
+    // Static Fallback & Caching Logic (for GitHub Pages compatibility)
+    const BASELINES = {
+        'BTC-USD': { price: 64281, change: 2.45 },
+        'ETH-USD': { price: 3421, change: -0.82 },
+        'SOL-USD': { price: 142.8, change: 12.4 },
+        'ADA-USD': { price: 0.45, change: 1.15 },
+        'DOT-USD': { price: 7.22, change: -3.42 },
+        'XRP-USD': { price: 0.621, change: 0.45 },
+        'LINK-USD': { price: 18.55, change: 4.22 },
+        'MATIC-USD': { price: 0.724, change: -1.22 },
+        'AVAX-USD': { price: 35.12, change: 6.88 },
+        'DOGE-USD': { price: 0.1852, change: 4.5 },
+        'LTC-USD': { price: 88.45, change: -0.22 }
+    };
+    const priceCache = {};
+    const CACHE_DURATION = 15000; // 15 seconds
+    let backoffUntil = 0;
+
+    const fetchPrice = async (symbol) => {
+        const now = Date.now();
+        if (priceCache[symbol] && (now - priceCache[symbol].timestamp < CACHE_DURATION)) return priceCache[symbol].data;
+        if (now < backoffUntil && priceCache[symbol]) return priceCache[symbol].data;
+
+        try {
+            // Direct call to Blockchain.com API (CORS-friendly)
+            const res = await fetch(`https://api.blockchain.com/v3/exchange/tickers/${symbol}`);
+            if (!res.ok) throw new Error(res.status);
+            const data = await res.json();
+            
+            const result = {
+                symbol: symbol,
+                last_trade_price: data.last_trade_price,
+                price_24h: data.price_24h,
+                history24h: [] // Note: History needs separate API usually, we'll keep it simple or use mocks
+            };
+            
+            priceCache[symbol] = { data: result, timestamp: now };
+            backoffUntil = 0;
+            return result;
+        } catch (err) {
+            if (err.message === '429') backoffUntil = now + 60000;
+            
+            if (priceCache[symbol]) return priceCache[symbol].data;
+            
+            // Final Mock Fallback
+            const base = BASELINES[symbol] || { price: 10, change: 0 };
+            const drift = (Math.random() - 0.5) * 0.002;
+            const mockPrice = base.price * (1 + drift);
+            const mockPrev = mockPrice / (1 + (base.change / 100));
+            
+            return {
+                last_trade_price: mockPrice,
+                price_24h: mockPrev,
+                history24h: Array.from({length: 24}, () => mockPrev * (1 + (Math.random()-0.5)*0.05))
+            };
+        }
+    };
+    
     // Top 3 featured assets mapped to HTML DOM glass cards
     const symbols = ['BTC-USD', 'ETH-USD', 'SOL-USD'];
     const cards = document.querySelectorAll('.glass-card');
@@ -22,8 +80,7 @@ bindHolographicCards();
     const fetchDashboardData = () => {
         symbols.forEach((symbol, index) => {
             setTimeout(() => {
-                fetch(`/api/price/${symbol}`)
-                .then(res => res.json())
+                fetchPrice(symbol)
                 .then(data => {
                     const card = cards[index];
                     if (!card) return;
@@ -93,8 +150,7 @@ bindHolographicCards();
         rows.forEach((row, index) => {
             const sym = row.getAttribute('data-symbol');
             setTimeout(() => {
-                fetch(`/api/price/${sym}`)
-                .then(res => res.json())
+                fetchPrice(sym)
                 .then(data => {
                     const currentPrice = data.last_trade_price ? parseFloat(data.last_trade_price) : NaN;
                     const price24h = data.price_24h ? parseFloat(data.price_24h) : NaN;

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Markets | Kinetic Ledger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#a1faff',
+                        secondary: '#3fff8b',
+                        error: '#ff716c',
+                        surface: '#0b0e11',
+                        'surface-container': '#12161b',
+                        'surface-container-low': '#161b22',
+                        'surface-container-high': '#22262b',
+                        'surface-container-highest': '#2d333b',
+                        'on-surface': '#f0f6fc',
+                        'on-surface-variant': '#8b949e',
+                        'outline': '#30363d',
+                        'outline-variant': '#484f58'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        headline: ['Space Grotesk', 'sans-serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-surface text-on-surface font-sans antialiased selection:bg-primary/30 selection:text-primary">
+<div class="ambient-grid"></div>
+
+<div class="flex h-screen overflow-hidden">
+    <aside class="h-screen w-64 fixed left-0 top-0 border-r border-[#1c2024]/15 bg-[#0b0e11] hidden xl:flex flex-col py-8 gap-4 z-40">
+<div class="px-6 mb-6 cursor-pointer" onclick="window.location.href='index.html'">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center shadow-[0_0_15px_rgba(161,250,255,0.4)]">
+<span class="material-symbols-outlined text-on-primary text-xl font-bold">bolt</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight text-on-surface leading-none font-['Space_Grotesk']">Kinetic</h1>
+<span class="text-[10px] text-on-surface-variant font-mono tracking-wider uppercase">V1.0.4</span>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 py-6 flex flex-col gap-2 relative">
+<!-- Search Form Assignment Component -->
+<div class="px-0 mb-4">
+    <form action="/price" method="GET" class="relative group">
+        <span onclick="if(this.nextElementSibling.value) this.closest('form').submit()" class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm group-focus-within:text-primary hover:text-primary cursor-pointer z-10 transition-colors">search</span>
+        <input name="coin" class="w-full bg-surface-container-highest border border-outline-variant/30 rounded-xl pl-10 pr-4 py-3 text-sm focus:ring-1 focus:ring-primary/50 transition-all text-on-surface placeholder:text-on-surface-variant/40 outline-none shadow-[0_4px_20px_rgba(0,0,0,0.1)] focus:shadow-[0_0_15px_rgba(161,250,255,0.15)]" placeholder="Enter coin (e.g. BTC)" type="text" required autocomplete="off"/>
+    </form>
+</div>
+<!-- Highlight Active State dynamically using EJS variable 'currentPath' -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container group transition-all" href="index.html">
+<span class="material-symbols-outlined w-6 text-center">grid_view</span>
+<span class="font-label text-sm font-medium tracking-wide">Dashboard</span>
+</a>
+<!-- Markets -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl bg-surface-container-high text-primary border border-surface-container-highest shadow-[0_4px_20px_rgba(0,0,0,0.2)] transition-all" href="markets.html">
+<span class="material-symbols-outlined w-6 text-center  transition-transform">trending_up</span>
+<span class="font-label text-sm font-medium tracking-wide">Markets</span>
+</a>
+<!-- Portfolio -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container group transition-all" href="portfolio.html">
+<span class="material-symbols-outlined w-6 text-center group-hover:scale-110 transition-transform">account_balance_wallet</span>
+<span class="font-label text-sm font-medium tracking-wide">Portfolio</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full bg-primary/10 text-primary hover:bg-primary/20 hover:shadow-[0_0_20px_rgba(161,250,255,0.2)] transition-all font-bold tracking-wide rounded-xl py-3 border border-primary/20">Connect Wallet</button>
+</div>
+</aside>
+
+    
+    <!-- Mobile Header -->
+    <div class="xl:hidden fixed top-0 w-full bg-surface/80 backdrop-blur-md border-b border-outline-variant/20 py-4 px-6 flex justify-between items-center z-30">
+        <h1 class="text-xl font-bold font-headline">Kinetic</h1>
+        <span class="material-symbols-outlined text-primary cursor-pointer hover:bg-surface-container-high p-2 rounded-lg transition-colors">menu</span>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-1 xl:ml-64 relative z-10 p-8 pt-24 xl:pt-12 pb-32 h-full overflow-y-auto w-full custom-scrollbar scroll-smooth">
+        
+        <header class="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-6 mb-12">
+            <div>
+                <h1 class="text-4xl font-headline font-bold mb-2">Global Markets</h1>
+                <p class="text-on-surface-variant text-sm max-w-lg">Comprehensive real-time tracking of leading digital assets across high-liquidity orderbooks. Powered by Kinetic dynamic proxy architectures.</p>
+            </div>
+            
+            <div class="flex items-center gap-4 bg-surface-container-low/50 backdrop-blur-md px-6 py-4 rounded-2xl border border-outline-variant/20 shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+                <div class="flex flex-col">
+                    <span class="text-on-surface-variant text-[10px] font-bold tracking-[0.2em] uppercase mb-1">Total Market Cap</span>
+                    <span class="text-primary font-headline text-xl font-bold tracking-tight">Active Matrix</span>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-headline font-bold tracking-wide">Verified Asset Integrations</h2>
+                
+                <div class="flex items-center gap-2" id="asset-filters">
+                    <button data-filter="all" class="filter-btn px-5 py-2 bg-surface-container-high rounded-full text-xs font-bold text-on-surface transition-all shadow-[0_4px_10px_rgba(0,0,0,0.1)]">All Assets</button>
+                    <button data-filter="gainer" class="filter-btn px-5 py-2 bg-transparent rounded-full text-xs font-bold text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all">Top Gainers</button>
+                    <button data-filter="loser" class="filter-btn px-5 py-2 bg-transparent rounded-full text-xs font-bold text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all">Top Losers</button>
+                </div>
+            </div>
+
+            <div class="glass-card transform transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_25px_50px_rgba(0,244,254,0.15)] rounded-3xl overflow-hidden border border-outline-variant/10">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[800px]">
+                        <thead>
+                            <tr class="border-b border-outline-variant/20 text-[10px] font-bold tracking-[0.15em] text-on-surface-variant uppercase bg-surface-container-low/60">
+                                <th class="pl-8 px-4 py-5 font-medium">Asset Name</th>
+                                <th class="px-4 py-5 font-medium">Live Terminal Price</th>
+                                <th class="px-4 py-5 font-medium">24H Volatility</th>
+                                <th class="px-4 py-5 font-medium">Verified Market Cap</th>
+                                <th class="px-4 py-5 font-medium">V2 Algorithmic Graph</th>
+                                <th class="pr-8 px-4 py-5 font-medium text-right">Execute</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            
+                                <tr class="border-b border-outline-variant/10 hover:bg-surface-container/40 transition-colors table-asset-row group" data-symbol="BTC-USD">
+                                    <td class="pl-8 px-4 py-6">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(161,250,255,0.2)] transition-all">
+                                                <span class="material-symbols-outlined text-xl">currency_bitcoin</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-sm tracking-wide text-on-surface group-hover:text-primary transition-colors">Bitcoin</div>
+                                                <div class="text-[11px] text-on-surface-variant font-medium mt-0.5 tracking-wider">BTC</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6">
+                                        <div class="font-mono text-[15px] font-bold tracking-tight text-on-surface price-cell row-price">
+                                            $64,281.40
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-6 row-change">
+                                        <span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+                                    </td>
+                                    <td class="px-4 py-6">
+                                        <span class="text-[13px] font-medium text-on-surface-variant tracking-wide">$1.40T</span>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6 w-32">
+                                        <!-- SVG Generation Container -->
+                                        <svg class="row-svg h-8 w-full opacity-60 group-hover:opacity-100 transition-opacity" viewbox="0 0 100 30">
+                                            <path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path>
+                                        </svg>
+                                    </td>
+
+                                    <td class="pr-8 px-4 py-6 text-right">
+                                        <button onclick="window.location.href='coin.html#BTC-USD'" class="w-10 h-10 rounded-xl bg-primary/10 text-primary border border-primary/20 hover:bg-primary text-on-surface focus:outline-none hover:shadow-[0_0_20px_rgba(161,250,255,0.4)] transition-all inline-flex items-center justify-center group/btn cursor-pointer relative z-20">
+                                            <span class="material-symbols-outlined text-lg group-hover/btn:text-[#0b0e11] group-hover/btn:translate-x-0.5 transition-transform">swap_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="border-b border-outline-variant/10 hover:bg-surface-container/40 transition-colors table-asset-row group" data-symbol="ETH-USD">
+                                    <td class="pl-8 px-4 py-6">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(161,250,255,0.2)] transition-all">
+                                                <span class="material-symbols-outlined text-xl">token</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-sm tracking-wide text-on-surface group-hover:text-primary transition-colors">Ethereum</div>
+                                                <div class="text-[11px] text-on-surface-variant font-medium mt-0.5 tracking-wider">ETH</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6">
+                                        <div class="font-mono text-[15px] font-bold tracking-tight text-on-surface price-cell row-price">
+                                            $3,421.15
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-6 row-change">
+                                        <span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+                                    </td>
+                                    <td class="px-4 py-6">
+                                        <span class="text-[13px] font-medium text-on-surface-variant tracking-wide">$410.2B</span>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6 w-32">
+                                        <!-- SVG Generation Container -->
+                                        <svg class="row-svg h-8 w-full opacity-60 group-hover:opacity-100 transition-opacity" viewbox="0 0 100 30">
+                                            <path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path>
+                                        </svg>
+                                    </td>
+
+                                    <td class="pr-8 px-4 py-6 text-right">
+                                        <button onclick="window.location.href='coin.html#ETH-USD'" class="w-10 h-10 rounded-xl bg-primary/10 text-primary border border-primary/20 hover:bg-primary text-on-surface focus:outline-none hover:shadow-[0_0_20px_rgba(161,250,255,0.4)] transition-all inline-flex items-center justify-center group/btn cursor-pointer relative z-20">
+                                            <span class="material-symbols-outlined text-lg group-hover/btn:text-[#0b0e11] group-hover/btn:translate-x-0.5 transition-transform">swap_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="border-b border-outline-variant/10 hover:bg-surface-container/40 transition-colors table-asset-row group" data-symbol="SOL-USD">
+                                    <td class="pl-8 px-4 py-6">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(161,250,255,0.2)] transition-all">
+                                                <span class="material-symbols-outlined text-xl">flash_on</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-sm tracking-wide text-on-surface group-hover:text-primary transition-colors">Solana</div>
+                                                <div class="text-[11px] text-on-surface-variant font-medium mt-0.5 tracking-wider">SOL</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6">
+                                        <div class="font-mono text-[15px] font-bold tracking-tight text-on-surface price-cell row-price">
+                                            $142.88
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-6 row-change">
+                                        <span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+                                    </td>
+                                    <td class="px-4 py-6">
+                                        <span class="text-[13px] font-medium text-on-surface-variant tracking-wide">$82.9B</span>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6 w-32">
+                                        <!-- SVG Generation Container -->
+                                        <svg class="row-svg h-8 w-full opacity-60 group-hover:opacity-100 transition-opacity" viewbox="0 0 100 30">
+                                            <path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path>
+                                        </svg>
+                                    </td>
+
+                                    <td class="pr-8 px-4 py-6 text-right">
+                                        <button onclick="window.location.href='coin.html#SOL-USD'" class="w-10 h-10 rounded-xl bg-primary/10 text-primary border border-primary/20 hover:bg-primary text-on-surface focus:outline-none hover:shadow-[0_0_20px_rgba(161,250,255,0.4)] transition-all inline-flex items-center justify-center group/btn cursor-pointer relative z-20">
+                                            <span class="material-symbols-outlined text-lg group-hover/btn:text-[#0b0e11] group-hover/btn:translate-x-0.5 transition-transform">swap_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="border-b border-outline-variant/10 hover:bg-surface-container/40 transition-colors table-asset-row group" data-symbol="XRP-USD">
+                                    <td class="pl-8 px-4 py-6">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(161,250,255,0.2)] transition-all">
+                                                <span class="material-symbols-outlined text-xl">waves</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-sm tracking-wide text-on-surface group-hover:text-primary transition-colors">Ripple</div>
+                                                <div class="text-[11px] text-on-surface-variant font-medium mt-0.5 tracking-wider">XRP</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6">
+                                        <div class="font-mono text-[15px] font-bold tracking-tight text-on-surface price-cell row-price">
+                                            $0.6210
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-6 row-change">
+                                        <span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+                                    </td>
+                                    <td class="px-4 py-6">
+                                        <span class="text-[13px] font-medium text-on-surface-variant tracking-wide">$33.3B</span>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6 w-32">
+                                        <!-- SVG Generation Container -->
+                                        <svg class="row-svg h-8 w-full opacity-60 group-hover:opacity-100 transition-opacity" viewbox="0 0 100 30">
+                                            <path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path>
+                                        </svg>
+                                    </td>
+
+                                    <td class="pr-8 px-4 py-6 text-right">
+                                        <button onclick="window.location.href='coin.html#XRP-USD'" class="w-10 h-10 rounded-xl bg-primary/10 text-primary border border-primary/20 hover:bg-primary text-on-surface focus:outline-none hover:shadow-[0_0_20px_rgba(161,250,255,0.4)] transition-all inline-flex items-center justify-center group/btn cursor-pointer relative z-20">
+                                            <span class="material-symbols-outlined text-lg group-hover/btn:text-[#0b0e11] group-hover/btn:translate-x-0.5 transition-transform">swap_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="border-b border-outline-variant/10 hover:bg-surface-container/40 transition-colors table-asset-row group" data-symbol="ADA-USD">
+                                    <td class="pl-8 px-4 py-6">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(161,250,255,0.2)] transition-all">
+                                                <span class="material-symbols-outlined text-xl">star</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-sm tracking-wide text-on-surface group-hover:text-primary transition-colors">Cardano</div>
+                                                <div class="text-[11px] text-on-surface-variant font-medium mt-0.5 tracking-wider">ADA</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6">
+                                        <div class="font-mono text-[15px] font-bold tracking-tight text-on-surface price-cell row-price">
+                                            $0.4500
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-6 row-change">
+                                        <span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+                                    </td>
+                                    <td class="px-4 py-6">
+                                        <span class="text-[13px] font-medium text-on-surface-variant tracking-wide">$16.1B</span>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6 w-32">
+                                        <!-- SVG Generation Container -->
+                                        <svg class="row-svg h-8 w-full opacity-60 group-hover:opacity-100 transition-opacity" viewbox="0 0 100 30">
+                                            <path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path>
+                                        </svg>
+                                    </td>
+
+                                    <td class="pr-8 px-4 py-6 text-right">
+                                        <button onclick="window.location.href='coin.html#ADA-USD'" class="w-10 h-10 rounded-xl bg-primary/10 text-primary border border-primary/20 hover:bg-primary text-on-surface focus:outline-none hover:shadow-[0_0_20px_rgba(161,250,255,0.4)] transition-all inline-flex items-center justify-center group/btn cursor-pointer relative z-20">
+                                            <span class="material-symbols-outlined text-lg group-hover/btn:text-[#0b0e11] group-hover/btn:translate-x-0.5 transition-transform">swap_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="border-b border-outline-variant/10 hover:bg-surface-container/40 transition-colors table-asset-row group" data-symbol="DOGE-USD">
+                                    <td class="pl-8 px-4 py-6">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(161,250,255,0.2)] transition-all">
+                                                <span class="material-symbols-outlined text-xl">pets</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-sm tracking-wide text-on-surface group-hover:text-primary transition-colors">Dogecoin</div>
+                                                <div class="text-[11px] text-on-surface-variant font-medium mt-0.5 tracking-wider">DOGE</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6">
+                                        <div class="font-mono text-[15px] font-bold tracking-tight text-on-surface price-cell row-price">
+                                            $0.1852
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-6 row-change">
+                                        <span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+                                    </td>
+                                    <td class="px-4 py-6">
+                                        <span class="text-[13px] font-medium text-on-surface-variant tracking-wide">$24.5B</span>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6 w-32">
+                                        <!-- SVG Generation Container -->
+                                        <svg class="row-svg h-8 w-full opacity-60 group-hover:opacity-100 transition-opacity" viewbox="0 0 100 30">
+                                            <path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path>
+                                        </svg>
+                                    </td>
+
+                                    <td class="pr-8 px-4 py-6 text-right">
+                                        <button onclick="window.location.href='coin.html#DOGE-USD'" class="w-10 h-10 rounded-xl bg-primary/10 text-primary border border-primary/20 hover:bg-primary text-on-surface focus:outline-none hover:shadow-[0_0_20px_rgba(161,250,255,0.4)] transition-all inline-flex items-center justify-center group/btn cursor-pointer relative z-20">
+                                            <span class="material-symbols-outlined text-lg group-hover/btn:text-[#0b0e11] group-hover/btn:translate-x-0.5 transition-transform">swap_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="border-b border-outline-variant/10 hover:bg-surface-container/40 transition-colors table-asset-row group" data-symbol="DOT-USD">
+                                    <td class="pl-8 px-4 py-6">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(161,250,255,0.2)] transition-all">
+                                                <span class="material-symbols-outlined text-xl">hub</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-sm tracking-wide text-on-surface group-hover:text-primary transition-colors">Polkadot</div>
+                                                <div class="text-[11px] text-on-surface-variant font-medium mt-0.5 tracking-wider">DOT</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6">
+                                        <div class="font-mono text-[15px] font-bold tracking-tight text-on-surface price-cell row-price">
+                                            $7.2200
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-6 row-change">
+                                        <span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+                                    </td>
+                                    <td class="px-4 py-6">
+                                        <span class="text-[13px] font-medium text-on-surface-variant tracking-wide">$10.2B</span>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6 w-32">
+                                        <!-- SVG Generation Container -->
+                                        <svg class="row-svg h-8 w-full opacity-60 group-hover:opacity-100 transition-opacity" viewbox="0 0 100 30">
+                                            <path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path>
+                                        </svg>
+                                    </td>
+
+                                    <td class="pr-8 px-4 py-6 text-right">
+                                        <button onclick="window.location.href='coin.html#DOT-USD'" class="w-10 h-10 rounded-xl bg-primary/10 text-primary border border-primary/20 hover:bg-primary text-on-surface focus:outline-none hover:shadow-[0_0_20px_rgba(161,250,255,0.4)] transition-all inline-flex items-center justify-center group/btn cursor-pointer relative z-20">
+                                            <span class="material-symbols-outlined text-lg group-hover/btn:text-[#0b0e11] group-hover/btn:translate-x-0.5 transition-transform">swap_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="border-b border-outline-variant/10 hover:bg-surface-container/40 transition-colors table-asset-row group" data-symbol="LINK-USD">
+                                    <td class="pl-8 px-4 py-6">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(161,250,255,0.2)] transition-all">
+                                                <span class="material-symbols-outlined text-xl">link</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-sm tracking-wide text-on-surface group-hover:text-primary transition-colors">Chainlink</div>
+                                                <div class="text-[11px] text-on-surface-variant font-medium mt-0.5 tracking-wider">LINK</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6">
+                                        <div class="font-mono text-[15px] font-bold tracking-tight text-on-surface price-cell row-price">
+                                            $18.55
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-6 row-change">
+                                        <span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+                                    </td>
+                                    <td class="px-4 py-6">
+                                        <span class="text-[13px] font-medium text-on-surface-variant tracking-wide">$10.9B</span>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6 w-32">
+                                        <!-- SVG Generation Container -->
+                                        <svg class="row-svg h-8 w-full opacity-60 group-hover:opacity-100 transition-opacity" viewbox="0 0 100 30">
+                                            <path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path>
+                                        </svg>
+                                    </td>
+
+                                    <td class="pr-8 px-4 py-6 text-right">
+                                        <button onclick="window.location.href='coin.html#LINK-USD'" class="w-10 h-10 rounded-xl bg-primary/10 text-primary border border-primary/20 hover:bg-primary text-on-surface focus:outline-none hover:shadow-[0_0_20px_rgba(161,250,255,0.4)] transition-all inline-flex items-center justify-center group/btn cursor-pointer relative z-20">
+                                            <span class="material-symbols-outlined text-lg group-hover/btn:text-[#0b0e11] group-hover/btn:translate-x-0.5 transition-transform">swap_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="border-b border-outline-variant/10 hover:bg-surface-container/40 transition-colors table-asset-row group" data-symbol="MATIC-USD">
+                                    <td class="pl-8 px-4 py-6">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(161,250,255,0.2)] transition-all">
+                                                <span class="material-symbols-outlined text-xl">layers</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-sm tracking-wide text-on-surface group-hover:text-primary transition-colors">Polygon</div>
+                                                <div class="text-[11px] text-on-surface-variant font-medium mt-0.5 tracking-wider">MATIC</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6">
+                                        <div class="font-mono text-[15px] font-bold tracking-tight text-on-surface price-cell row-price">
+                                            $0.7240
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-6 row-change">
+                                        <span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+                                    </td>
+                                    <td class="px-4 py-6">
+                                        <span class="text-[13px] font-medium text-on-surface-variant tracking-wide">$6.9B</span>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6 w-32">
+                                        <!-- SVG Generation Container -->
+                                        <svg class="row-svg h-8 w-full opacity-60 group-hover:opacity-100 transition-opacity" viewbox="0 0 100 30">
+                                            <path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path>
+                                        </svg>
+                                    </td>
+
+                                    <td class="pr-8 px-4 py-6 text-right">
+                                        <button onclick="window.location.href='coin.html#MATIC-USD'" class="w-10 h-10 rounded-xl bg-primary/10 text-primary border border-primary/20 hover:bg-primary text-on-surface focus:outline-none hover:shadow-[0_0_20px_rgba(161,250,255,0.4)] transition-all inline-flex items-center justify-center group/btn cursor-pointer relative z-20">
+                                            <span class="material-symbols-outlined text-lg group-hover/btn:text-[#0b0e11] group-hover/btn:translate-x-0.5 transition-transform">swap_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="border-b border-outline-variant/10 hover:bg-surface-container/40 transition-colors table-asset-row group" data-symbol="LTC-USD">
+                                    <td class="pl-8 px-4 py-6">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(161,250,255,0.2)] transition-all">
+                                                <span class="material-symbols-outlined text-xl">monetization_on</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-sm tracking-wide text-on-surface group-hover:text-primary transition-colors">Litecoin</div>
+                                                <div class="text-[11px] text-on-surface-variant font-medium mt-0.5 tracking-wider">LTC</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6">
+                                        <div class="font-mono text-[15px] font-bold tracking-tight text-on-surface price-cell row-price">
+                                            $88.45
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-6 row-change">
+                                        <span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+                                    </td>
+                                    <td class="px-4 py-6">
+                                        <span class="text-[13px] font-medium text-on-surface-variant tracking-wide">$7.1B</span>
+                                    </td>
+                                    
+                                    <td class="px-4 py-6 w-32">
+                                        <!-- SVG Generation Container -->
+                                        <svg class="row-svg h-8 w-full opacity-60 group-hover:opacity-100 transition-opacity" viewbox="0 0 100 30">
+                                            <path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path>
+                                        </svg>
+                                    </td>
+
+                                    <td class="pr-8 px-4 py-6 text-right">
+                                        <button onclick="window.location.href='coin.html#LTC-USD'" class="w-10 h-10 rounded-xl bg-primary/10 text-primary border border-primary/20 hover:bg-primary text-on-surface focus:outline-none hover:shadow-[0_0_20px_rgba(161,250,255,0.4)] transition-all inline-flex items-center justify-center group/btn cursor-pointer relative z-20">
+                                            <span class="material-symbols-outlined text-lg group-hover/btn:text-[#0b0e11] group-hover/btn:translate-x-0.5 transition-transform">swap_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- Dashboard Logic implicitly hooks and activates the table rows & tracking dynamically -->
+<script src="/dashboard.js"></script>
+
+</body>
+</html>

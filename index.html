@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kinetic Ledger | Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-dim": "#24f07e",
+              "on-tertiary": "#440900",
+              "surface-container-high": "#1c2024",
+              "tertiary-dim": "#dc3300",
+              "outline-variant": "#45484c",
+              "surface": "#0b0e11",
+              "secondary-fixed-dim": "#24f07e",
+              "on-tertiary-fixed": "#360600",
+              "secondary-container": "#006d35",
+              "primary": "#a1faff",
+              "on-primary-fixed": "#004346",
+              "surface-container-highest": "#22262b",
+              "on-background": "#f8f9fe",
+              "on-tertiary-container": "#000000",
+              "surface-container": "#161a1e",
+              "surface-container-lowest": "#000000",
+              "on-primary": "#006165",
+              "on-primary-fixed-variant": "#006266",
+              "primary-fixed-dim": "#00e5ee",
+              "primary-container": "#00f4fe",
+              "surface-tint": "#a1faff",
+              "surface-container-low": "#101417",
+              "secondary": "#3fff8b",
+              "surface-variant": "#22262b",
+              "error": "#ff716c",
+              "on-surface-variant": "#a9abaf",
+              "tertiary-container": "#fc3c00",
+              "inverse-on-surface": "#535559",
+              "on-surface": "#f8f9fe",
+              "on-primary-container": "#00575b",
+              "surface-bright": "#282d31",
+              "on-secondary-fixed": "#004820",
+              "inverse-primary": "#006a6e",
+              "error-container": "#9f0519",
+              "on-tertiary-fixed-variant": "#721600",
+              "on-error": "#490006",
+              "on-secondary-container": "#e3ffe4",
+              "background": "#0b0e11",
+              "secondary-fixed": "#3fff8b",
+              "primary-dim": "#00e5ee",
+              "tertiary": "#ff7350",
+              "error-dim": "#d7383b",
+              "on-error-container": "#ffa8a3",
+              "on-secondary": "#005d2c",
+              "primary-fixed": "#00f4fe",
+              "tertiary-fixed": "#ff9479",
+              "surface-dim": "#0b0e11",
+              "inverse-surface": "#f8f9fe",
+              "outline": "#737679",
+              "on-secondary-fixed-variant": "#006832",
+              "tertiary-fixed-dim": "#ff7d5c"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30">
+<div class="ambient-grid"></div>
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-[#1c2024]/15 bg-[#0b0e11] hidden xl:flex flex-col py-8 gap-4 z-40">
+<div class="px-6 mb-6 cursor-pointer" onclick="window.location.href='index.html'">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center shadow-[0_0_15px_rgba(161,250,255,0.4)]">
+<span class="material-symbols-outlined text-on-primary text-xl font-bold">bolt</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight text-on-surface leading-none font-['Space_Grotesk']">Kinetic</h1>
+<span class="text-[10px] text-on-surface-variant font-mono tracking-wider uppercase">V1.0.4</span>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 py-6 flex flex-col gap-2 relative">
+<!-- Search Form Assignment Component -->
+<div class="px-0 mb-4">
+    <form action="/price" method="GET" class="relative group">
+        <span onclick="if(this.nextElementSibling.value) this.closest('form').submit()" class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm group-focus-within:text-primary hover:text-primary cursor-pointer z-10 transition-colors">search</span>
+        <input name="coin" class="w-full bg-surface-container-highest border border-outline-variant/30 rounded-xl pl-10 pr-4 py-3 text-sm focus:ring-1 focus:ring-primary/50 transition-all text-on-surface placeholder:text-on-surface-variant/40 outline-none shadow-[0_4px_20px_rgba(0,0,0,0.1)] focus:shadow-[0_0_15px_rgba(161,250,255,0.15)]" placeholder="Enter coin (e.g. BTC)" type="text" required autocomplete="off"/>
+    </form>
+</div>
+<!-- Highlight Active State dynamically using EJS variable 'currentPath' -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl bg-surface-container-high text-primary border border-surface-container-highest shadow-[0_4px_20px_rgba(0,0,0,0.2)] transition-all" href="index.html">
+<span class="material-symbols-outlined w-6 text-center">grid_view</span>
+<span class="font-label text-sm font-medium tracking-wide">Dashboard</span>
+</a>
+<!-- Markets -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container group transition-all" href="markets.html">
+<span class="material-symbols-outlined w-6 text-center group-hover:scale-110 transition-transform">trending_up</span>
+<span class="font-label text-sm font-medium tracking-wide">Markets</span>
+</a>
+<!-- Portfolio -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container group transition-all" href="portfolio.html">
+<span class="material-symbols-outlined w-6 text-center group-hover:scale-110 transition-transform">account_balance_wallet</span>
+<span class="font-label text-sm font-medium tracking-wide">Portfolio</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full bg-primary/10 text-primary hover:bg-primary/20 hover:shadow-[0_0_20px_rgba(161,250,255,0.2)] transition-all font-bold tracking-wide rounded-xl py-3 border border-primary/20">Connect Wallet</button>
+</div>
+</aside>
+
+<!-- Main Content Canvas -->
+<main class="xl:pl-64 pt-8 min-h-screen">
+<div class="max-w-[1400px] mx-auto px-6 pb-20">
+<!-- Hero Section / Search & Status -->
+<section class="mb-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+<div class="space-y-2">
+<h1 class="text-4xl md:text-5xl font-headline font-bold tracking-tight">Market <span class="text-primary italic">Pulse</span></h1>
+<p class="text-on-surface-variant max-w-md">Real-time surveillance of the global digital asset ecosystem. Powered by Kinetic low-latency feeds.</p>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-low p-2 rounded-2xl border border-outline-variant/10">
+<div class="flex flex-col items-end px-3">
+<span class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Last Sync</span>
+<span class="text-xs font-mono font-medium">14:22:09 UTC</span>
+</div>
+<button class="bg-surface-container-highest hover:bg-surface-container-high text-primary p-3 rounded-xl transition-all active:scale-90 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">refresh</span>
+<span class="text-xs font-bold uppercase tracking-widest hidden sm:inline">Refresh</span>
+</button>
+</div>
+</div>
+<!-- Featured Assets (Top 3) - Bento Style -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Bitcoin -->
+<div onclick="window.location.href='coin.html#BTC-USD'" class="glass-card rounded-2xl p-6 relative overflow-hidden group border border-transparent hover:border-primary/40 cursor-pointer transition-all hover:-translate-y-2 hover:shadow-[0_25px_40px_rgba(0,244,254,0.15)]">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-7xl">currency_bitcoin</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-[#f7931a]/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#f7931a]" style="font-variation-settings: 'FILL' 1;">currency_bitcoin</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg leading-none">Bitcoin</h3>
+<span class="text-xs text-on-surface-variant font-medium">BTC / USD</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2 mb-4">
+<span class="text-3xl font-headline font-bold">$64,281.40</span>
+<span class="text-secondary text-sm font-bold">+2.45%</span>
+</div>
+<div class="h-12 w-full">
+<svg class="w-full h-full sparkline-glow-pos" viewbox="0 0 100 30">
+<path d="M0 25 L10 20 L20 22 L30 15 L40 18 L50 10 L60 14 L70 8 L80 12 L90 5 L100 2" fill="none" stroke="#3fff8b" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Ethereum -->
+<div onclick="window.location.href='coin.html#ETH-USD'" class="glass-card rounded-2xl p-6 relative overflow-hidden group border border-transparent hover:border-primary/40 cursor-pointer transition-all hover:-translate-y-2 hover:shadow-[0_25px_40px_rgba(0,244,254,0.15)]">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-7xl">token</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">token</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg leading-none">Ethereum</h3>
+<span class="text-xs text-on-surface-variant font-medium">ETH / USD</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2 mb-4">
+<span class="text-3xl font-headline font-bold">$3,421.15</span>
+<span class="text-error text-sm font-bold">-0.82%</span>
+</div>
+<div class="h-12 w-full">
+<svg class="w-full h-full sparkline-glow-neg" viewbox="0 0 100 30">
+<path d="M0 5 L10 8 L20 4 L30 10 L40 7 L50 15 L60 12 L70 20 L80 18 L90 25 L100 22" fill="none" stroke="#ff716c" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Solana -->
+<div onclick="window.location.href='coin.html#SOL-USD'" class="glass-card rounded-2xl p-6 relative overflow-hidden group border border-primary/20 hover:border-primary/60 cursor-pointer transition-all hover:-translate-y-2 hover:shadow-[0_25px_40px_rgba(0,244,254,0.15)]">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-7xl">stat_3</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">stat_3</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg leading-none">Solana</h3>
+<span class="text-xs text-on-surface-variant font-medium">SOL / USD</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2 mb-4">
+<span class="text-3xl font-headline font-bold">$142.88</span>
+<span class="text-secondary text-sm font-bold">+12.4%</span>
+</div>
+<div class="h-12 w-full">
+<svg class="w-full h-full sparkline-glow-pos" viewbox="0 0 100 30">
+<path d="M0 28 L10 25 L20 20 L30 22 L40 12 L50 15 L60 8 L70 10 L80 4 L90 6 L100 0" fill="none" stroke="#3fff8b" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- All Coins Table -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xl font-headline font-bold">Market Assets</h2>
+<div class="flex items-center gap-2" id="asset-filters">
+<button data-filter="all" class="filter-btn px-4 py-1.5 bg-surface-container-high rounded-full text-xs font-bold text-on-surface transition-colors">All</button>
+<button data-filter="gainer" class="filter-btn px-4 py-1.5 bg-transparent rounded-full text-xs font-bold text-on-surface-variant hover:text-on-surface transition-colors">Gainer</button>
+<button data-filter="loser" class="filter-btn px-4 py-1.5 bg-transparent rounded-full text-xs font-bold text-on-surface-variant hover:text-on-surface transition-colors">Loser</button>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-3xl overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/10">
+<th class="px-8 py-5 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Asset</th>
+<th class="px-4 py-5 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Price</th>
+<th class="px-4 py-5 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">24h Change</th>
+<th class="px-4 py-5 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Market Cap</th>
+<th class="px-4 py-5 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Performance</th>
+<th class="px-8 py-5 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+
+
+<tr id="row-ADA-USD" data-symbol="ADA-USD" onclick="window.location.href='coin.html#ADA-USD'" class="hover:bg-surface-container transition-colors group cursor-pointer table-asset-row">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-on-surface">star</span>
+</div>
+<div>
+<p class="font-bold text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text group-hover:text-transparent transition-all">Cardano</p>
+<p class="text-[10px] text-on-surface-variant uppercase">ADA</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-5 font-mono text-sm font-medium row-price text-on-surface">$0.4500</td>
+<td class="px-4 py-5 row-change">
+<span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+</td>
+<td class="px-4 py-5 text-sm text-on-surface-variant">$16.1B</td>
+<td class="px-4 py-5">
+<div class="w-24 h-6"><svg class="w-full h-full opacity-70 row-svg" viewbox="0 0 100 30"><path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path></svg></div>
+</td>
+<td class="px-8 py-5 text-right"><button class="opacity-0 group-hover:opacity-100 bg-primary/10 text-primary px-4 py-1.5 rounded-lg text-xs font-bold transition-all">Trade</button></td>
+</tr>
+
+<tr id="row-DOT-USD" data-symbol="DOT-USD" onclick="window.location.href='coin.html#DOT-USD'" class="hover:bg-surface-container transition-colors group cursor-pointer table-asset-row">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-on-surface">hub</span>
+</div>
+<div>
+<p class="font-bold text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text group-hover:text-transparent transition-all">Polkadot</p>
+<p class="text-[10px] text-on-surface-variant uppercase">DOT</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-5 font-mono text-sm font-medium row-price text-on-surface">$7.2200</td>
+<td class="px-4 py-5 row-change">
+<span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+</td>
+<td class="px-4 py-5 text-sm text-on-surface-variant">$10.2B</td>
+<td class="px-4 py-5">
+<div class="w-24 h-6"><svg class="w-full h-full opacity-70 row-svg" viewbox="0 0 100 30"><path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path></svg></div>
+</td>
+<td class="px-8 py-5 text-right"><button class="opacity-0 group-hover:opacity-100 bg-primary/10 text-primary px-4 py-1.5 rounded-lg text-xs font-bold transition-all">Trade</button></td>
+</tr>
+
+<tr id="row-XRP-USD" data-symbol="XRP-USD" onclick="window.location.href='coin.html#XRP-USD'" class="hover:bg-surface-container transition-colors group cursor-pointer table-asset-row">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-on-surface">waves</span>
+</div>
+<div>
+<p class="font-bold text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text group-hover:text-transparent transition-all">Ripple</p>
+<p class="text-[10px] text-on-surface-variant uppercase">XRP</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-5 font-mono text-sm font-medium row-price text-on-surface">$0.6210</td>
+<td class="px-4 py-5 row-change">
+<span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+</td>
+<td class="px-4 py-5 text-sm text-on-surface-variant">$33.3B</td>
+<td class="px-4 py-5">
+<div class="w-24 h-6"><svg class="w-full h-full opacity-70 row-svg" viewbox="0 0 100 30"><path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path></svg></div>
+</td>
+<td class="px-8 py-5 text-right"><button class="opacity-0 group-hover:opacity-100 bg-primary/10 text-primary px-4 py-1.5 rounded-lg text-xs font-bold transition-all">Trade</button></td>
+</tr>
+
+<tr id="row-LINK-USD" data-symbol="LINK-USD" onclick="window.location.href='coin.html#LINK-USD'" class="hover:bg-surface-container transition-colors group cursor-pointer table-asset-row">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-on-surface">link</span>
+</div>
+<div>
+<p class="font-bold text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text group-hover:text-transparent transition-all">Chainlink</p>
+<p class="text-[10px] text-on-surface-variant uppercase">LINK</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-5 font-mono text-sm font-medium row-price text-on-surface">$18.55</td>
+<td class="px-4 py-5 row-change">
+<span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+</td>
+<td class="px-4 py-5 text-sm text-on-surface-variant">$10.99B</td>
+<td class="px-4 py-5">
+<div class="w-24 h-6"><svg class="w-full h-full opacity-70 row-svg" viewbox="0 0 100 30"><path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path></svg></div>
+</td>
+<td class="px-8 py-5 text-right"><button class="opacity-0 group-hover:opacity-100 bg-primary/10 text-primary px-4 py-1.5 rounded-lg text-xs font-bold transition-all">Trade</button></td>
+</tr>
+
+<tr id="row-MATIC-USD" data-symbol="MATIC-USD" onclick="window.location.href='coin.html#MATIC-USD'" class="hover:bg-surface-container transition-colors group cursor-pointer table-asset-row">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-on-surface">layers</span>
+</div>
+<div>
+<p class="font-bold text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text group-hover:text-transparent transition-all">Polygon</p>
+<p class="text-[10px] text-on-surface-variant uppercase">MATIC</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-5 font-mono text-sm font-medium row-price text-on-surface">$0.7240</td>
+<td class="px-4 py-5 row-change">
+<span class="text-on-surface-variant text-xs font-bold px-2 py-1 rounded-lg">---</span>
+</td>
+<td class="px-4 py-5 text-sm text-on-surface-variant">$6.9B</td>
+<td class="px-4 py-5">
+<div class="w-24 h-6"><svg class="w-full h-full opacity-70 row-svg" viewbox="0 0 100 30"><path d="" fill="none" stroke="#737679" stroke-linecap="round" stroke-width="2"></path></svg></div>
+</td>
+<td class="px-8 py-5 text-right"><button class="opacity-0 group-hover:opacity-100 bg-primary/10 text-primary px-4 py-1.5 rounded-lg text-xs font-bold transition-all">Trade</button></td>
+</tr>
+
+</tbody>
+</table>
+</div>
+<div class="px-8 py-4 bg-surface-container-highest/30 flex justify-between items-center">
+<span class="text-xs text-on-surface-variant font-medium">Showing 1-10 of 124 assets</span>
+<div class="flex gap-2">
+<button class="p-1 hover:text-primary transition-colors"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="p-1 hover:text-primary transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Mobile Bottom Navigation Shell -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-[#0b0e11]/90 backdrop-blur-xl border-t border-outline-variant/10 z-50 flex justify-around items-center h-16 px-4">
+<a class="flex flex-col items-center gap-1 text-[#a1faff]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="text-[10px] font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">show_chart</span>
+<span class="text-[10px]">Markets</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="text-[10px]">Wallet</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px]">Profile</span>
+</a>
+</nav>
+<!-- Floating Action Button - Only on appropriate screens -->
+<button class="fixed bottom-24 right-8 w-14 h-14 bg-primary text-on-primary rounded-2xl shadow-2xl flex items-center justify-center hover:scale-105 transition-transform active:scale-95 z-50 lg:bottom-12">
+<span class="material-symbols-outlined" style="font-variation-settings: 'wght' 600;">swap_horiz</span>
+</button>
+<script src="/dashboard.js"></script>
+</body></html>
